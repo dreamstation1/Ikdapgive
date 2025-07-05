@@ -21,7 +21,7 @@ document.getElementById("sendBtn").addEventListener("click", () => {
   const name = localStorage.getItem("guestName");
 
   if (message) {
-    fetch("https://너의URL.vercel.app/api/messages", {
+    fetch("https://ikdapgive-z87w.vercel.app/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
