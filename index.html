@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>익명의 답장을 보내주세요!!</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrapper" id="nameSection">
+    <h1>승재의 방명록</h1>
+    <p class="info">이름을 적어주세요 (다음 사용 시 자동 저장됩니다.)</p>
+    <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
+    <button id="nameBtn">확인</button>
+    <p class="small-text">관리자에게는 작성자 이름이 보이지 않습니다.</p>
+  </div>
+
+  <div class="wrapper hidden" id="messageSection">
+    <p class="info">익명의 답장을 써주세요!</p>
+    <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
+    <button id="sendBtn">보내기!</button>
+  </div>
+
+  <div class="wrapper hidden" id="successSection">
+    <p class="success">익명의 답장을 전송하였습니다!!</p>
+    <button id="anotherBtn">다른 메세지 보내기</button>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
