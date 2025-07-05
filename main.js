@@ -21,7 +21,7 @@ document.getElementById("sendBtn").addEventListener("click", () => {
   const name = localStorage.getItem("guestName");
 
   if (message) {
-    fetch("/api/messages", {
+    fetch("https://너의URL.vercel.app/api/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -47,3 +47,35 @@ function showMessageSection() {
   document.getElementById("nameSection").classList.add("hidden");
   document.getElementById("messageSection").classList.remove("hidden");
 }
+
+document.getElementById("adminBtn").addEventListener("click", () => {
+  document.getElementById("adminSection").classList.remove("hidden");
+});
+
+document.getElementById("checkPassBtn").addEventListener("click", () => {
+  const pass = document.getElementById("adminPass").value;
+
+  if (pass === "5263815731abc!") {  // ← 관리자 비번
+    fetch("https://너의URL.vercel.app/api/messages")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("adminSection").classList.add("hidden");
+        document.getElementById("allMessages").classList.remove("hidden");
+
+        const tbody = document.querySelector("#msgTable tbody");
+        tbody.innerHTML = "";
+        data.forEach(item => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.message}</td>
+            <td>${item.time}</td>
+            <td>${item.ip}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      });
+  } else {
+    alert("비밀번호가 틀렸습니다!");
+  }
+});
