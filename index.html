@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="wrapper" id="nameSection">
+  <div class="wrapper active" id="nameSection">
     <h1>익명의 메세지를 보내주세요!!</h1>
     <p class="info">이름을 적어주세요 (다음 사용 시 자동 저장됩니다.)</p>
     <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
@@ -15,25 +15,25 @@
     <p class="small-text">관리자에게는 작성자 이름이 보이지 않습니다.</p>
   </div>
 
-  <div class="wrapper hidden" id="messageSection">
+  <div class="wrapper" id="messageSection">
     <p class="info">익명의 답장을 써주세요!</p>
     <textarea id="messageInput" placeholder="메시지를 입력하세요"></textarea>
     <button id="sendBtn">보내기!</button>
   </div>
 
-  <div class="wrapper hidden" id="successSection">
+  <div class="wrapper" id="successSection">
     <p class="success">익명의 답장을 전송하였습니다!!</p>
     <button id="anotherBtn">다른 메세지 보내기</button>
   </div>
 
   <button id="adminBtn" class="admin-button">관리자 모드</button>
 
-  <div class="wrapper hidden" id="adminSection">
+  <div class="wrapper" id="adminSection">
     <input type="password" id="adminPass" placeholder="관리자 비밀번호 입력" />
     <button id="checkPassBtn">확인</button>
   </div>
 
-  <div class="wrapper hidden" id="allMessages">
+  <div class="wrapper" id="allMessages">
     <h2>전체 메시지</h2>
     <table id="msgTable">
       <thead>
@@ -48,7 +48,6 @@
     </table>
   </div>
 
-  <!-- ✅ defer 반드시 붙임 -->
   <script src="main.js" defer></script>
 </body>
 </html>
