@@ -5,7 +5,9 @@ html, body {
   background: linear-gradient(135deg, #ffe066, #ffb347);
   color: #222;
   height: 100%;
+  overflow: hidden; /* ✅ 스크롤 방지 */
 }
+
 
 .wrapper {
   max-width: 500px;
