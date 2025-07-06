@@ -1,8 +1,9 @@
 // supabase 연결
-const supabase = supabase.createClient(
+const supabase = window.supabase.createClient(
   'https://pekkymttpwmfvuxbgskf.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBla2t5bXR0cHdtZnZ1eGJnc2tmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4MTE0NTUsImV4cCI6MjA2NzM4NzQ1NX0.jpIY3TPOI-HDHnPe6llBPJUyOK1U80_nC6wl2_TMYLA'
 );
+
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("nameBtn").addEventListener("click", () => {
