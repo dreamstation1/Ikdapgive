@@ -1,60 +1,61 @@
-window.onload = () => {
-  const savedName = localStorage.getItem("guestName");
-  if (savedName) {
-    document.getElementById("nameInput").value = savedName;
-    showOnly("messageSection");
-  } else {
-    showOnly("nameSection");
-  }
-};
+<!-- Supabase 라이브러리 먼저 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-document.getElementById("nameBtn").addEventListener("click", () => {
-  const name = document.getElementById("nameInput").value.trim();
-  if (name) {
-    localStorage.setItem("guestName", name);
-    showOnly("messageSection");
-  } else {
-    alert("이름을 입력해주세요!");
-  }
-});
+<script>
+  // Supabase 연결
+  const supabase = supabase.createClient(
+    'https://pekkymttpwmfvuxbgskf.supabase.co',
+    '네-API-키'
+  );
 
-document.getElementById("sendBtn").addEventListener("click", () => {
-  const message = document.getElementById("messageInput").value.trim();
-  const name = localStorage.getItem("guestName");
-  const userAgent = navigator.userAgent;
-
-  if (message) {
-    fetch("https://ikdapgive-z87w.vercel.app/api/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name, message, userAgent })
-    })
-    .then(() => {
-      showOnly("successSection");
-      document.getElementById("messageInput").value = "";
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("nameBtn").addEventListener("click", () => {
+      const name = document.getElementById("nameInput").value.trim();
+      if (name) {
+        localStorage.setItem("guestName", name);
+        showOnly("messageSection");
+      } else {
+        alert("이름을 입력해주세요!");
+      }
     });
-  } else {
-    alert("메시지를 입력해주세요!");
-  }
-});
 
-document.getElementById("anotherBtn").addEventListener("click", () => {
-  showOnly("messageSection");
-});
+    document.getElementById("sendBtn").addEventListener("click", async () => {
+      const name = localStorage.getItem("guestName");
+      const message = document.getElementById("messageInput").value.trim();
+      const userAgent = navigator.userAgent;
+      const ip = 'unknown';
 
-document.getElementById("adminBtn").addEventListener("click", () => {
-  showOnly("adminSection");
-});
+      if (message) {
+        const { data, error } = await supabase
+          .from('messages')
+          .insert([{ name, message, ip, userAgent }]);
 
-document.getElementById("checkPassBtn").addEventListener("click", () => {
-  const pass = document.getElementById("adminPass").value;
+        if (error) {
+          console.error('저장 실패', error);
+          alert('메시지 저장 실패!');
+        } else {
+          console.log('저장 성공', data);
+          alert('메시지 저장 완료!');
+          document.getElementById("messageInput").value = "";
+          showOnly("successSection");
+        }
+      } else {
+        alert("메시지를 입력해주세요!");
+      }
+    });
 
-  if (pass === "5263815731abc!") {
-    fetch("https://ikdapgive-z87w.vercel.app/api/messages")
-      .then(res => res.json())
-      .then(data => {
+    document.getElementById("checkPassBtn").addEventListener("click", async () => {
+      const pass = document.getElementById("adminPass").value;
+      if (pass === "5263815731abc!") {
+        const { data, error } = await supabase
+          .from('messages')
+          .select('*');
+
+        if (error) {
+          console.error('불러오기 실패', error);
+          return;
+        }
+
         showOnly("allMessages");
 
         const tbody = document.querySelector("#msgTable tbody");
@@ -64,20 +65,29 @@ document.getElementById("checkPassBtn").addEventListener("click", () => {
           tr.innerHTML = `
             <td>${item.name}</td>
             <td>${item.message}</td>
-            <td>${item.time}</td>
-            <td>${item.ip}</td>
+            <td>${item.created_at || "-"}</td>
+            <td>${item.ip || "-"}</td>
           `;
           tbody.appendChild(tr);
         });
-      });
-  } else {
-    alert("비밀번호가 틀렸습니다!");
-  }
-});
+      } else {
+        alert("비밀번호가 틀렸습니다!");
+      }
+    });
 
-function showOnly(sectionId) {
-  document.querySelectorAll(".wrapper").forEach(div => {
-    div.classList.remove("active");
+    document.getElementById("anotherBtn").addEventListener("click", () => {
+      showOnly("messageSection");
+    });
+
+    document.getElementById("adminBtn").addEventListener("click", () => {
+      showOnly("adminSection");
+    });
+
+    function showOnly(sectionId) {
+      document.querySelectorAll(".wrapper").forEach(div => {
+        div.classList.remove("active");
+      });
+      document.getElementById(sectionId).classList.add("active");
+    }
   });
-  document.getElementById(sectionId).classList.add("active");
-}
+</script>
