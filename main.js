@@ -2,9 +2,12 @@ window.onload = () => {
   const savedName = localStorage.getItem("guestName");
   if (savedName) {
     document.getElementById("nameInput").value = savedName;
-    showMessageSection();
+    showOnly("messageSection");
+  } else {
+    showOnly("nameSection");
   }
 };
+
 
 document.getElementById("nameBtn").addEventListener("click", () => {
   const name = document.getElementById("nameInput").value.trim();
