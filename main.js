@@ -21,6 +21,7 @@ document.getElementById("nameBtn").addEventListener("click", () => {
 document.getElementById("sendBtn").addEventListener("click", () => {
   const message = document.getElementById("messageInput").value.trim();
   const name = localStorage.getItem("guestName");
+  const userAgent = navigator.userAgent;
 
   if (message) {
     fetch("https://ikdapgive-z87w.vercel.app/api/messages", {
@@ -28,9 +29,11 @@ document.getElementById("sendBtn").addEventListener("click", () => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ name, message })
-    }).then(() => {
-      showOnly("successSection");
+      body: JSON.stringify({ name, message, userAgent })
+    })
+    .then(() => {
+      document.getElementById("messageSection").classList.add("hidden");
+      document.getElementById("successSection").classList.remove("hidden");
       document.getElementById("messageInput").value = "";
     });
   } else {
