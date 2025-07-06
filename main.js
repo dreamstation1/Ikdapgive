@@ -41,6 +41,43 @@ document.getElementById("sendBtn").addEventListener("click", () => {
   }
 });
 
+// pages/api/messages.js
+import { writeFile, readFile } from "fs/promises";
+import path from "path";
+
+const filePath = path.join(process.cwd(), "data.json");
+
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    const { name, message, userAgent } = req.body;
+    const time = new Date().toLocaleString("ko-KR");
+    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+    let existing = [];
+    try {
+      const fileData = await readFile(filePath, "utf-8");
+      existing = JSON.parse(fileData);
+    } catch {
+      // 파일 없으면 빈 배열로 둠
+    }
+
+    existing.push({ name, message, time, ip, userAgent });
+    await writeFile(filePath, JSON.stringify(existing, null, 2), "utf-8");
+    return res.status(200).json({ ok: true });
+  }
+
+  if (req.method === "GET") {
+    try {
+      const fileData = await readFile(filePath, "utf-8");
+      const json = JSON.parse(fileData);
+      return res.status(200).json(json);
+    } catch {
+      return res.status(200).json([]);
+    }
+  }
+}
+
+
 document.getElementById("anotherBtn").addEventListener("click", () => {
   showOnly("messageSection");
 });
