@@ -8,12 +8,11 @@ window.onload = () => {
   }
 };
 
-
 document.getElementById("nameBtn").addEventListener("click", () => {
   const name = document.getElementById("nameInput").value.trim();
   if (name) {
     localStorage.setItem("guestName", name);
-    showMessageSection();
+    showOnly("messageSection");
   } else {
     alert("이름을 입력해주세요!");
   }
@@ -24,46 +23,44 @@ document.getElementById("sendBtn").addEventListener("click", () => {
   const name = localStorage.getItem("guestName");
 
   if (message) {
-    fetch("https://ikdapgive-z87w.vercel.app/", {
+    fetch("https://ikdapgive-z87w.vercel.app/api/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ name, message })
-    })
-      .then(() => {
-        document.getElementById("messageSection").classList.add("hidden");
-        document.getElementById("successSection").classList.remove("hidden");
-        document.getElementById("messageInput").value = "";
-      });
+    }).then(() => {
+      showOnly("successSection");
+      document.getElementById("messageInput").value = "";
+    });
   } else {
     alert("메시지를 입력해주세요!");
   }
 });
 
 document.getElementById("anotherBtn").addEventListener("click", () => {
-  document.getElementById("successSection").classList.add("hidden");
-  document.getElementById("messageSection").classList.remove("hidden");
+  showOnly("messageSection");
 });
 
-function showMessageSection() {
-  document.getElementById("nameSection").classList.add("hidden");
-  document.getElementById("messageSection").classList.remove("hidden");
+function showOnly(sectionId) {
+  document.querySelectorAll(".wrapper").forEach(div => {
+    div.classList.remove("active");
+  });
+  document.getElementById(sectionId).classList.add("active");
 }
 
 document.getElementById("adminBtn").addEventListener("click", () => {
-  document.getElementById("adminSection").classList.remove("hidden");
+  showOnly("adminSection");
 });
 
 document.getElementById("checkPassBtn").addEventListener("click", () => {
   const pass = document.getElementById("adminPass").value;
 
-  if (pass === "5263815731abc!") {  // ← 관리자 비번
-    fetch("https://너의URL.vercel.app/api/messages")
+  if (pass === "5263815731abc!") {
+    fetch("https://ikdapgive-z87w.vercel.app/api/messages")
       .then(res => res.json())
       .then(data => {
-        document.getElementById("adminSection").classList.add("hidden");
-        document.getElementById("allMessages").classList.remove("hidden");
+        showOnly("allMessages");
 
         const tbody = document.querySelector("#msgTable tbody");
         tbody.innerHTML = "";
